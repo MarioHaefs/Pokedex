@@ -1,0 +1,47 @@
+body {
+    margin-left: 8px;
+    margin-right: 8px;
+    font-family: 'Rubik';
+    background-color: black;
+    width: 100%;
+}
+
+.pokedex-content {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.pokemon-card {
+    height: 250px;
+    width: 200px;
+    background-color: rgb(187, 30, 30);
+    color: white;
+    border-radius: 30px;
+    margin: 8px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+#pokemon-img {
+    height: 150px;
+    width: 150px;
+}
+
+.pokeball {
+    height: 150px;
+    width: 150px;
+    border-radius: 100%;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+    margin-bottom: 32px;
+}
+
+#pokemon-type {
+    margin-top: 8px;
+}
