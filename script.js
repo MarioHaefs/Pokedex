@@ -11,6 +11,7 @@ async function loadPokemon() {
         pokemons.push(currentPokemon);
         setBackgroundColor(currentPokemon);
     }
+    
 }
 
 
@@ -34,6 +35,69 @@ function openCard(i) {
     container.innerHTML += openCardHTML(currentPokemon, i);
     document.getElementById('card-container').style.display = 'flex';
     setBackgroundColorSingleCard(currentPokemon);
+    statsChart(currentPokemon);
+}
+
+
+function statsChart(currentPokemon) {
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['hp', 'attack', 'defense', 'special-attack', 'special-defense', 'speed'],
+            datasets: [{
+                data: [
+                    currentPokemon['stats'][0]['base_stat'],
+                    currentPokemon['stats'][1]['base_stat'],
+                    currentPokemon['stats'][2]['base_stat'],
+                    currentPokemon['stats'][3]['base_stat'],
+                    currentPokemon['stats'][4]['base_stat'],
+                    currentPokemon['stats'][5]['base_stat'] 
+            ],
+                backgroundColor: [
+                    'red',
+                    'orange',
+                    '#997917',
+                    'purple',
+                    'rgb(65, 65, 65)',
+                    'yellow'
+                ],
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    ticks: {
+                        display: false,
+                        max: 200
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: 'white',
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Pokemon Stats',
+                    color: 'white'
+                },
+                legend: {
+                    display: false,
+                    labels: {
+                        color: 'white'
+                    }
+                }
+            },
+        }
+    });
 }
 
 
@@ -44,26 +108,7 @@ function openCardHTML(currentPokemon) {
         <img class="pokemon-img" src="${currentPokemon['sprites']['other']['official-artwork']['front_default']}"></img>
         <span id="pokemon-type">${currentPokemon['types'][0]['type']['name']}</span>
         <div class="stats">
-            <table>
-                <tr>
-                    <td class="space-right">${currentPokemon['stats'][0]['stat']['name']} :</td><td>${currentPokemon['stats'][0]['base_stat']} </td>             
-                </tr>
-                <tr>
-                    <td class="space-right">${currentPokemon['stats'][1]['stat']['name']} :</td><td>${currentPokemon['stats'][1]['base_stat']} </td>             
-                </tr>
-                <tr>
-                    <td class="space-right">${currentPokemon['stats'][2]['stat']['name']} :</td><td>${currentPokemon['stats'][2]['base_stat']} </td>             
-                </tr>
-                <tr>
-                    <td class="space-right">${currentPokemon['stats'][3]['stat']['name']} :</td><td>${currentPokemon['stats'][3]['base_stat']} </td>             
-                </tr>
-                <tr>
-                    <td class="space-right">${currentPokemon['stats'][4]['stat']['name']} :</td><td>${currentPokemon['stats'][4]['base_stat']} </td>             
-                </tr>
-                <tr>
-                    <td class="space-right">${currentPokemon['stats'][5]['stat']['name']} :</td><td>${currentPokemon['stats'][5]['base_stat']} </td>             
-                </tr>
-            </table>
+            <canvas id="myChart" width="400" height="200"></canvas>
         </div>
     </div>
     `;
