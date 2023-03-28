@@ -1,3 +1,22 @@
+const typeColors = {
+    grass: 'green',
+    fire: 'red',
+    water: 'blue',
+    bug: 'rgb(134, 196, 42)',
+    poison: 'rgb(65, 1, 65)',
+    electric: 'rgba(205, 173, 0)',
+    ground: '#997917',
+    fairy: 'rgb(250, 126, 147)',
+    fighting: 'orange',
+    psychic: 'purple',
+    rock: 'rgb(65, 65, 65)',
+    ghost: 'rgb(16, 12, 54)',
+    ice: 'rgb(109, 128, 236)',
+    dragon: 'rgb(248, 59, 59)',
+    default: 'gray'
+};
+
+
 function pokedexHTML(i, currentPokemon) {
     return /*html*/`
     <div onclick="openCard(${i})" class="pokemon-card"> 
@@ -11,14 +30,30 @@ function pokedexHTML(i, currentPokemon) {
 
 
 function openCardHTML(currentPokemon) {
+    let moves = currentPokemon['moves'];
+    let moveElements = '';
+    
+    for (let i = 0; i < Math.min(moves.length, 6); i++) {
+        moveElements += `<span class="space-bottom">• ${moves[i]['move']['name']}</span>`;}
+
     return /*html*/`
     <div class="pokemon-single-card" id="single-card" onclick="doNotClose(event)">
         <h3>${currentPokemon['name']}</h3>
+        <img onclick="previousPokemon()" class="left-arrow" src="img/left.png" alt=""><img onclick="nextPokemon()" class="right-arrow" src="img/right.png" alt="">
         <img class="pokeball-bg" src="img/pokeball-bg.png" alt="">
         <img class="pokemon-img" src="${currentPokemon['sprites']['other']['official-artwork']['front_default']}"></img>
         <span id="pokemon-type">${currentPokemon['types'][0]['type']['name']}</span>
         <div class="stats">
+            <div class="info-position">
+                <span id="stats-text" onclick="showStats()" class="margin-right current-pokemon-info underline-text">Stats</span> 
+                <span id="moves-text" onclick="showMoves()" class="margin-right current-pokemon-info">Moves</span>
+                <span id="game-graphic-text" onclick="showGameGraphic()" class="current-pokemon-info">Game Graphic</span>
+            </div>
             <canvas id="myChart"></canvas>
+            <div id="moves" class="abilities" style="display: none;">
+                ${moveElements}               
+            </div>
+            <img id="game-graphic" src="${currentPokemon['sprites']['front_default']}" style="display: none;">
         </div>
     </div>
     `;
@@ -80,8 +115,6 @@ function statsChart(currentPokemon) {
             plugins: {
                 title: {
                     display: true,
-                    text: 'Pokemon Stats',
-                    color: 'white',
                 },
                 legend: {
                     display: false,
@@ -92,118 +125,4 @@ function statsChart(currentPokemon) {
             },
         }
     });
-}
-
-
-function setBackgroundColor(currentPokemon) {
-    let type = currentPokemon['types'][0]['type']['name'];
-    let backgroundColor;
-    switch (type) {
-        case 'grass':
-            backgroundColor = 'green';
-            break;
-        case 'fire':
-            backgroundColor = 'red';
-            break;
-        case 'water':
-            backgroundColor = 'blue';
-            break;
-        case 'bug':
-            backgroundColor = 'rgb(134, 196, 42)'
-            break;
-        case 'poison':
-            backgroundColor = 'rgb(65, 1, 65)'
-            break;
-        case 'electric':
-            backgroundColor = 'rgba(205, 173, 0)'
-            break;
-        case 'ground':
-            backgroundColor = '#997917'
-            break;
-        case 'fairy':
-            backgroundColor = 'rgb(250, 126, 147)'
-            break;
-        case 'fighting':
-            backgroundColor = 'orange'
-            break;
-        case 'psychic':
-            backgroundColor = 'purple'
-            break;
-        case 'rock':
-            backgroundColor = 'rgb(65, 65, 65)'
-            break;
-        case 'ghost':
-            backgroundColor = 'rgb(16, 12, 54)'
-            break;
-        case 'ice':
-            backgroundColor = 'rgb(109, 128, 236)'
-            break;
-        case 'dragon':
-            backgroundColor = 'rgb(248, 59, 59)'
-            break;
-
-        default:
-            backgroundColor = 'gray';
-            break;
-    }
-
-    let pokemonCard = document.querySelector('.pokemon-card:last-child');
-    pokemonCard.style.backgroundColor = backgroundColor;
-}
-
-
-function setBackgroundColorSingleCard(currentPokemon) {
-    let type = currentPokemon['types'][0]['type']['name'];
-    let backgroundColor;
-    switch (type) {
-        case 'grass':
-            backgroundColor = 'green';
-            break;
-        case 'fire':
-            backgroundColor = 'red';
-            break;
-        case 'water':
-            backgroundColor = 'blue';
-            break;
-        case 'bug':
-            backgroundColor = 'rgb(134, 196, 42)'
-            break;
-        case 'poison':
-            backgroundColor = 'rgb(65, 1, 65)'
-            break;
-        case 'electric':
-            backgroundColor = 'rgba(205, 173, 0)'
-            break;
-        case 'ground':
-            backgroundColor = '#997917'
-            break;
-        case 'fairy':
-            backgroundColor = 'rgb(250, 126, 147)'
-            break;
-        case 'fighting':
-            backgroundColor = 'orange'
-            break;
-        case 'psychic':
-            backgroundColor = 'purple'
-            break;
-        case 'rock':
-            backgroundColor = 'rgb(65, 65, 65)'
-            break;
-        case 'ghost':
-            backgroundColor = 'rgb(16, 12, 54)'
-            break;
-        case 'ice':
-            backgroundColor = 'rgb(109, 128, 236)'
-            break;
-        case 'dragon':
-            backgroundColor = 'rgb(248, 59, 59)'
-            break;
-
-        default:
-            backgroundColor = 'gray';
-            break;
-    }
-
-    let pokemonSingleCard = document.querySelector('.pokemon-single-card:last-child');
-    pokemonSingleCard.style.backgroundColor = backgroundColor;
 }
